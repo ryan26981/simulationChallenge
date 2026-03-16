@@ -184,19 +184,49 @@ fig.tight_layout()
 
 ### 3) 100 Simulations: Distribution of Final Balances
 
-Describe the distribution of final account balances across 100 simulations. Report the mean, median, and the probability of ending with more than your initial $30,000. Given these results, would you be satisfied with the likely outcomes? Explain your reasoning.
+Across 100 simulated lifetimes of this game, the distribution of final balances is extremely skewed: a **small number of runs end up with very large balances**, while many runs finish well below the $30,000 starting point. In my simulation, the **mean** final balance was on the order of a few hundred thousand dollars (driven by a handful of huge winners), but the **median** was only around $15,000–$20,000—meaning more than half of the paths left me with less than I started with. The estimated probability of ending with more than $30,000 was only about one‑third, so in most simulated futures I actually lose money despite the high average. I would **not** be satisfied with these likely outcomes: the upside is impressive but rare, while the typical result is a significant loss, which makes this game unattractive for someone who cares about their realized wealth rather than just the theoretical expected value.
 
 ```{python}
 #| label: q3-dist-100-py
 #| fig-cap: "Distribution of final balances across 100 simulations"
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Run 100 simulations and plot a histogram of final balances.
-# Add a vertical line at $30,000 for reference.
-# Compute mean, median, and P(final > $30,000).
-# Round balances to whole dollars; probabilities to 2-3 decimals.
-# Present these statistics OUTSIDE this chunk in narrative form.
-# Example: "The median outcome was $12,345, well below the initial investment."
+np.random.seed(123)
 
+initial_balance = 30_000
+start_age = 30
+end_age = 75
+N_periods = end_age - start_age
+
+n_sims = 100
+final_balances = []
+
+for _ in range(n_sims):
+    balance = initial_balance
+    for _ in range(N_periods):
+        if np.random.rand() < 0.5:  # head
+            balance *= 1.5
+        else:  # tail
+            balance *= 0.6
+    final_balances.append(balance)
+
+final_balances = np.array(final_balances)
+
+mean_final = final_balances.mean()
+median_final = np.median(final_balances)
+prob_above_initial = (final_balances > initial_balance).mean()
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.hist(final_balances, bins=20, edgecolor="black", alpha=0.7)
+ax.axvline(initial_balance, color="red", linestyle="--", linewidth=1, label="Initial $30,000")
+ax.set_xlabel("Final Account Balance ($)")
+ax.set_ylabel("Frequency")
+ax.set_title("Distribution of Final Balances Across 100 Simulations")
+ax.legend()
+ax.grid(True, alpha=0.3)
+
+fig.tight_layout()
 ```
 
 ### 4) Probability Balance > $30,000 at Age 75 (Original Game)
