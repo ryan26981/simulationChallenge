@@ -36,35 +36,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="index_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -175,7 +146,7 @@ Your analysis should read as a **persuasive narrative** arguing for or against t
 </section>
 <section id="executive-summary" class="level2">
 <h2 class="anchored" data-anchor-id="executive-summary">Executive Summary</h2>
-<p>This analysis evaluates whether to commit $30,000 to a repeated coin‑flip investment game and compares an all‑in strategy to a more conservative bet‑sizing rule. Although a single flip has a positive expected value—raising the average balance to about $31,500—the long‑run simulations show that <strong>most individual lifetimes end below the initial $30,000</strong>, with only about one‑third of paths finishing ahead. A modified strategy that wagers only 25% of wealth each year produces a much tighter distribution of outcomes, with higher probability of preserving and growing capital and far fewer catastrophic losses. Taken together, the evidence leads me to <strong>decline the original all‑in game</strong> but to <strong>favor a disciplined partial‑bet approach</strong> (similar in spirit to Kelly‑style bet sizing) if I were required to participate in this opportunity.</p>
+<p>This analysis evaluates whether to commit $30,000 to a repeated coin‑flip investment game and compares an all‑in strategy to a more conservative bet‑sizing rule. Although a single flip has a positive expected value—raising the average balance to about $31,500—the long‑run simulations show that <strong>most individual lifetimes end below the initial $30,000</strong>, with only about 15-20% of paths finishing ahead. A modified strategy that wagers only 25% of wealth each year produces a much tighter distribution of outcomes, with higher probability of preserving and growing capital and far fewer catastrophic losses. Taken together, the evidence leads me to <strong>decline the original all‑in game</strong> but to <strong>favor a disciplined partial‑bet approach</strong> (similar in spirit to Kelly‑style bet sizing) if I were required to participate in this opportunity.</p>
 <section id="generative-dag-model-from-the-source-challenge" class="level3">
 <h3 class="anchored" data-anchor-id="generative-dag-model-from-the-source-challenge">Generative DAG Model (from the source challenge)</h3>
 <p>The following DAFT diagram shows the generative structure of the investment game over time.</p>
@@ -199,11 +170,11 @@ Figure&nbsp;1: Generative DAG model for the investment game showing how wealth e
 <h2 class="anchored" data-anchor-id="analysis-tasks-fill-these-in">Analysis Tasks (Fill These In)</h2>
 <section id="expected-value-after-1-flip" class="level3">
 <h3 class="anchored" data-anchor-id="expected-value-after-1-flip">1) Expected Value After 1 Flip</h3>
-<p>After a single flip, the expected value of my account is <strong>higher</strong> than the $30,000 buy‑in: with a 50% chance of increasing the balance by 50% (to $45,000) and a 50% chance of losing 40% (to $18,000), the expected balance is <span class="math inline">\(0.5 \times 45{,}000 + 0.5 \times 18{,}000 = 31{,}500\)</span>. This is a gain of <strong>$1,500</strong>, which is a <strong>5.0% increase</strong> over the initial $30,000 investment. Based on this one‑year expected‑value calculation alone, I would recommend buying into the game, because on average each $30,000 investment is worth $31,500 after one flip; however, this simple analysis does not yet account for the risk of unfavorable sequences over many years.</p>
+<p>After one flip, the expected value of the account is $31,500, which is $1,500 more than the original $30,000 buy-in. This comes from averaging the two possible outcomes: a 50% chance of ending with $45,000 after a head and a 50% chance of ending with $18,000 after a tail. That works out to a 5.0% expected gain after one year. Based only on this one-period expected value, the game looks attractive, since the average outcome is positive. Still, this does not mean the game is necessarily a good investment overall, because expected value alone does not capture how much risk builds up when the game is repeated over many years.</p>
 </section>
 <section id="single-simulation-over-time-narrative-plot" class="level3">
 <h3 class="anchored" data-anchor-id="single-simulation-over-time-narrative-plot">2) Single Simulation Over Time (Narrative + Plot)</h3>
-<p>In one representative simulation path, my account balance starts at $30,000 and initially grows as a few early heads compound the gains: after three flips with a sequence like H–H–T, the balance climbs first to $45,000, then to $67,500, before dropping to about $40,500 after the tail. Over time, the path continues to zig‑zag, but the multiplicative effects of the losses are more punishing than the gains are rewarding; later in the simulation a cluster of tails drives the balance well below the starting point, ending the run with a final balance of only around $12,000. Visually, the trajectory looks volatile—sharp upward jumps followed by steep drawdowns—with long stretches where the balance remains depressed once it has fallen. I would <strong>not</strong> be satisfied with this particular outcome: despite some exciting peaks along the way, the path ultimately leaves me with substantially less than my initial $30,000, underscoring how vulnerable a single realized path can be even when the one‑flip expected value is positive.</p>
+<p>In one simulated path, the account balance starts at $30,000 and evolves through a series of gains and losses depending on the coin flips. The trajectory is highly volatile, with sharp increases following heads and significant drops after tails. While there are periods where the balance grows meaningfully, these gains can be quickly reversed by subsequent losses. Over time, the multiplicative effect of repeated downturns becomes especially damaging, and in this simulation the balance ultimately falls well below the initial investment. Visually, the path shows large swings with no consistent upward trend, and once the balance declines, it becomes increasingly difficult to recover. I would not be satisfied with this outcome, as it highlights how a single realized path can lead to a substantial loss despite the game having a positive expected value in the short run.</p>
 <div id="cell-q2-single-sim-py" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div id="q2-single-sim-py" class="quarto-figure quarto-figure-center anchored">
@@ -217,8 +188,8 @@ Figure&nbsp;1: Generative DAG model for the investment game showing how wealth e
 </section>
 <section id="simulations-distribution-of-final-balances" class="level3">
 <h3 class="anchored" data-anchor-id="simulations-distribution-of-final-balances">3) 100 Simulations: Distribution of Final Balances</h3>
-<p>Across 100 simulated lifetimes of this game, the distribution of final balances is extremely skewed: a <strong>small number of runs end up with very large balances</strong>, while many runs finish well below the $30,000 starting point. In my simulation, the <strong>mean</strong> final balance was on the order of a few hundred thousand dollars (driven by a handful of huge winners), but the <strong>median</strong> was only around $15,000–$20,000—meaning more than half of the paths left me with less than I started with. The estimated probability of ending with more than $30,000 was only about one‑third, so in most simulated futures I actually lose money despite the high average. I would <strong>not</strong> be satisfied with these likely outcomes: the upside is impressive but rare, while the typical result is a significant loss, which makes this game unattractive for someone who cares about their realized wealth rather than just the theoretical expected value.</p>
-<div id="771a1268" class="cell" data-execution_count="5">
+<p>Across 100 simulated lifetimes, the distribution of final balances is highly skewed. A small number of runs generate extremely large outcomes, while most end well below the $30,000 starting point. In my simulation, the mean final balance is very large—driven by a few extreme winners—but the median is only about $4,400, meaning that more than half of the outcomes result in losing most of the initial investment. The probability of finishing above $30,000 is only about 16%, so the vast majority of paths end in a loss. This highlights the core issue: although the average outcome looks attractive, it is not representative of what typically happens. The upside is real but rare, while the most likely result is a significant loss, making the game unattractive from a practical investment perspective.</p>
+<div id="5a8e9a71" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -226,16 +197,11 @@ Figure&nbsp;1: Generative DAG model for the investment game showing how wealth e
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Mean final balance: $65,519.62
-Median final balance: $4,431.47
-Probability of finishing above $30,000: 16.0%</code></pre>
-</div>
 </div>
 </section>
 <section id="probability-balance-30000-at-age-75-original-game" class="level3">
 <h3 class="anchored" data-anchor-id="probability-balance-30000-at-age-75-original-game">4) Probability Balance &gt; $30,000 at Age 75 (Original Game)</h3>
-<p>Using the 100 simulated paths from the original game, the estimated probability of finishing with more than $30,000 is only about <strong>one‑third</strong> (roughly 0.30–0.35). In other words, even though the one‑year expected value is positive, in the long run <strong>most</strong> simulated lifetimes end below the initial buy‑in, and only a minority finish ahead. For my investment decision, this relatively low probability of success reinforces my earlier concerns about risk: it suggests that a typical outcome is a loss, so I would <strong>not</strong> change my recommendation from Section 1—I would still decline this game despite its attractive expected value.</p>
+<p>Based on the 100 simulated paths, the estimated probability of finishing with more than $30,000 is about 16%. This means that in the majority of simulated outcomes, the final balance ends up below the initial investment. Even though the game has a positive expected value in a single year, the long-run results show that most individual paths lose money. This reinforces the key issue with the game: strong upside exists, but it is not the typical outcome. Given this low probability of finishing ahead, I would not change my earlier conclusion, I would still decline the investment because the most likely result is a loss.</p>
 </section>
 <section id="modified-strategy-bet-exactly-25-each-round" class="level3">
 <h3 class="anchored" data-anchor-id="modified-strategy-bet-exactly-25-each-round">5) Modified Strategy (Bet Exactly 25% Each Round)</h3>
@@ -260,16 +226,6 @@ Probability of finishing above $30,000: 55.0%</code></pre>
 <h3 class="anchored" data-anchor-id="the-kelly-criterion">6) The Kelly Criterion</h3>
 <p>The Kelly Criterion is a formula that tells you what <strong>fraction of your wealth to bet</strong> in order to maximize long‑run growth when you face a repeated favorable gamble. It balances upside and downside by choosing a bet size that maximizes the expected logarithm of wealth, rather than short‑term expected value, which makes it especially relevant for multiplicative games like this one. For our coin flip—where you gain 50% on the bet with probability 0.5 and lose 40% with probability 0.5—the Kelly formula suggests betting a <strong>fraction of wealth strictly less than 100%</strong>, because going all‑in each year exposes you to too much drawdown and a high chance of ending poor despite a positive edge. The modified strategy from Section 5, which stakes only 25% of the balance each round, moves us closer to a Kelly‑style approach: it deliberately limits bet size to protect against ruin while still exploiting the favorable odds. While 25% may not be the exact mathematical Kelly fraction, the spirit of Kelly clearly <strong>supports</strong> this type of partial‑bet strategy over the original all‑in game, reinforcing my recommendation to prefer the 25% approach.</p>
 </section>
-</section>
-<section id="professional-presentation" class="level2">
-<h2 class="anchored" data-anchor-id="professional-presentation">Professional Presentation</h2>
-<p>This report is structured as a professional presentation aimed at a decision‑maker who must choose whether to buy into the investment game:</p>
-<ul>
-<li><strong>Clear narrative:</strong> the analysis is organized from problem setup to simulations to strategy recommendations, and can be read end‑to‑end in about 1–5 minutes.</li>
-<li><strong>Focus on insights:</strong> each section emphasizes risk profiles, counter‑intuitive behavior of multiplicative bets, and the practical implications for an investor’s realized wealth.</li>
-<li><strong>Professional style:</strong> code is hidden where appropriate (<code>echo: false</code>), figures use clean labeling and consistent styling, and all key quantities are rounded for readability.</li>
-<li><strong>Human interpretation:</strong> quantitative results are translated into plain‑language statements about the likelihood of losses, the appeal of upside tails, and which strategy is most prudent.</li>
-</ul>
 </section>
 
 </main>

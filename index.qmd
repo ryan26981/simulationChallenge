@@ -90,7 +90,7 @@ You play annually until age 75. Your mission is to analyze outcomes and communic
 
 ## Executive Summary
 
-This analysis evaluates whether to commit $30,000 to a repeated coin‑flip investment game and compares an all‑in strategy to a more conservative bet‑sizing rule. Although a single flip has a positive expected value—raising the average balance to about $31,500—the long‑run simulations show that **most individual lifetimes end below the initial $30,000**, with only about one‑third of paths finishing ahead. A modified strategy that wagers only 25% of wealth each year produces a much tighter distribution of outcomes, with higher probability of preserving and growing capital and far fewer catastrophic losses. Taken together, the evidence leads me to **decline the original all‑in game** but to **favor a disciplined partial‑bet approach** (similar in spirit to Kelly‑style bet sizing) if I were required to participate in this opportunity.
+This analysis evaluates whether to commit $30,000 to a repeated coin‑flip investment game and compares an all‑in strategy to a more conservative bet‑sizing rule. Although a single flip has a positive expected value—raising the average balance to about $31,500—the long‑run simulations show that **most individual lifetimes end below the initial $30,000**, with only about 15-20% of paths finishing ahead. A modified strategy that wagers only 25% of wealth each year produces a much tighter distribution of outcomes, with higher probability of preserving and growing capital and far fewer catastrophic losses. Taken together, the evidence leads me to **decline the original all‑in game** but to **favor a disciplined partial‑bet approach** (similar in spirit to Kelly‑style bet sizing) if I were required to participate in this opportunity.
 
 ### Generative DAG Model (from the source challenge)
 
@@ -133,21 +133,21 @@ investmentDAG.show()
 
 ### 1) Expected Value After 1 Flip
 
-After a single flip, the expected value of my account is **higher** than the $30,000 buy‑in: with a 50% chance of increasing the balance by 50% (to $45,000) and a 50% chance of losing 40% (to $18,000), the expected balance is $0.5 \times 45{,}000 + 0.5 \times 18{,}000 = 31{,}500$. This is a gain of **$1,500**, which is a **5.0% increase** over the initial $30,000 investment. Based on this one‑year expected‑value calculation alone, I would recommend buying into the game, because on average each $30,000 investment is worth $31,500 after one flip; however, this simple analysis does not yet account for the risk of unfavorable sequences over many years.
+After one flip, the expected value of the account is $31,500, which is $1,500 more than the original $30,000 buy-in. This comes from averaging the two possible outcomes: a 50% chance of ending with $45,000 after a head and a 50% chance of ending with $18,000 after a tail. That works out to a 5.0% expected gain after one year. Based only on this one-period expected value, the game looks attractive, since the average outcome is positive. Still, this does not mean the game is necessarily a good investment overall, because expected value alone does not capture how much risk builds up when the game is repeated over many years.
 
 ```{python}
 #| label: q1-expected-value-py
 
-# Compute the expected value after one coin flip.
-# Round monetary values to whole dollars; percentages to 1 decimal.
-# Present your findings OUTSIDE this chunk in narrative prose.
-# Example: "The expected value is $36,000, a 20.0% gain over the buy-in."
+initial_balance = 30000
+ev = 0.5 * (1.5 * initial_balance) + 0.5 * (0.6 * initial_balance)
+gain = ev - initial_balance
+pct_gain = 100 * gain / initial_balance
 
 ```
 
 ### 2) Single Simulation Over Time (Narrative + Plot)
 
-In one representative simulation path, my account balance starts at $30,000 and initially grows as a few early heads compound the gains: after three flips with a sequence like H–H–T, the balance climbs first to $45,000, then to $67,500, before dropping to about $40,500 after the tail. Over time, the path continues to zig‑zag, but the multiplicative effects of the losses are more punishing than the gains are rewarding; later in the simulation a cluster of tails drives the balance well below the starting point, ending the run with a final balance of only around $12,000. Visually, the trajectory looks volatile—sharp upward jumps followed by steep drawdowns—with long stretches where the balance remains depressed once it has fallen. I would **not** be satisfied with this particular outcome: despite some exciting peaks along the way, the path ultimately leaves me with substantially less than my initial $30,000, underscoring how vulnerable a single realized path can be even when the one‑flip expected value is positive.
+In one simulated path, the account balance starts at $30,000 and evolves through a series of gains and losses depending on the coin flips. The trajectory is highly volatile, with sharp increases following heads and significant drops after tails. While there are periods where the balance grows meaningfully, these gains can be quickly reversed by subsequent losses. Over time, the multiplicative effect of repeated downturns becomes especially damaging, and in this simulation the balance ultimately falls well below the initial investment. Visually, the path shows large swings with no consistent upward trend, and once the balance declines, it becomes increasingly difficult to recover. I would not be satisfied with this outcome, as it highlights how a single realized path can lead to a substantial loss despite the game having a positive expected value in the short run.
 
 ```{python}
 #| label: q2-single-sim-py
@@ -188,7 +188,7 @@ fig.tight_layout()
 
 ### 3) 100 Simulations: Distribution of Final Balances
 
-Across 100 simulated lifetimes of this game, the distribution of final balances is extremely skewed: a **small number of runs end up with very large balances**, while many runs finish well below the $30,000 starting point. In my simulation, the **mean** final balance was on the order of a few hundred thousand dollars (driven by a handful of huge winners), but the **median** was only around $15,000–$20,000—meaning more than half of the paths left me with less than I started with. The estimated probability of ending with more than $30,000 was only about one‑third, so in most simulated futures I actually lose money despite the high average. I would **not** be satisfied with these likely outcomes: the upside is impressive but rare, while the typical result is a significant loss, which makes this game unattractive for someone who cares about their realized wealth rather than just the theoretical expected value.
+Across 100 simulated lifetimes, the distribution of final balances is highly skewed. A small number of runs generate extremely large outcomes, while most end well below the $30,000 starting point. In my simulation, the mean final balance is very large—driven by a few extreme winners—but the median is only about $4,400, meaning that more than half of the outcomes result in losing most of the initial investment. The probability of finishing above $30,000 is only about 16%, so the vast majority of paths end in a loss. This highlights the core issue: although the average outcome looks attractive, it is not representative of what typically happens. The upside is real but rare, while the most likely result is a significant loss, making the game unattractive from a practical investment perspective.
 
 ```{python}
 import numpy as np
@@ -238,23 +238,17 @@ ax.legend()
 fig.tight_layout()
 plt.show()
 
-print(f"Mean final balance: ${mean_final:,.2f}")
-print(f"Median final balance: ${median_final:,.2f}")
-print(f"Probability of finishing above $30,000: {prob_above_initial:.1%}")
+# print(f"Mean final balance: ${mean_final:,.2f}")
+# print(f"Median final balance: ${median_final:,.2f}")
+# print(f"Probability of finishing above $30,000: {prob_above_initial:.1%}")
 ```
 
 ### 4) Probability Balance > $30,000 at Age 75 (Original Game)
-
-Using the 100 simulated paths from the original game, the estimated probability of finishing with more than $30,000 is only about **one‑third** (roughly 0.30–0.35). In other words, even though the one‑year expected value is positive, in the long run **most** simulated lifetimes end below the initial buy‑in, and only a minority finish ahead. For my investment decision, this relatively low probability of success reinforces my earlier concerns about risk: it suggests that a typical outcome is a loss, so I would **not** change my recommendation—I would still decline this game despite its attractive expected value.
-
+Based on the 100 simulated paths, the estimated probability of finishing with more than $30,000 is about 16%. This means that in the majority of simulated outcomes, the final balance ends up below the initial investment. Even though the game has a positive expected value in a single year, the long-run results show that most individual paths lose money. This reinforces the key issue with the game: strong upside exists, but it is not the typical outcome. Given this low probability of finishing ahead, I would not change my earlier conclusion, I would still decline the investment because the most likely result is a loss.
 ```{python}
 #| label: q4-prob-original-py
 
-# Using the 100 simulations, estimate P(final > $30,000).
-# Round the probability to 2-3 decimal places.
-# Present this result OUTSIDE this chunk in narrative form.
-# Interpret what this probability means for your investment decision.
-
+prob_above_initial = (final_balances > initial_balance).mean()
 ```
 
 ### 5) Modified Strategy (Bet Exactly 25% Each Round)
@@ -316,9 +310,9 @@ ax.legend()
 
 fig.tight_layout()
 
-print(f"Mean final balance: ${mean_final_mod:,.2f}")
-print(f"Median final balance: ${median_final_mod:,.2f}")
-print(f"Probability of finishing above $30,000: {prob_above_initial_mod:.1%}")
+# print(f"Mean final balance: ${mean_final_mod:,.2f}")
+# print(f"Median final balance: ${median_final_mod:,.2f}")
+# print(f"Probability of finishing above $30,000: {prob_above_initial_mod:.1%}")
 ```
 
 ### 6) The Kelly Criterion
