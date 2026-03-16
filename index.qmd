@@ -129,7 +129,7 @@ investmentDAG.show()
 
 ### 1) Expected Value After 1 Flip
 
-Explain whether the expected value of your account balance after one flip is greater than, equal to, or less than $30,000. What is the gain in expected value as a percentage of your buy-in? Based on this simple analysis, state whether you would recommend buying into the game and why.
+After a single flip, the expected value of my account is **higher** than the $30,000 buy‑in: with a 50% chance of increasing the balance by 50% (to $45,000) and a 50% chance of losing 40% (to $18,000), the expected balance is \(0.5 \times 45{,}000 + 0.5 \times 18{,}000 = 31{,}500\). This is a gain of **$1,500**, which is a **5.0% increase** over the initial $30,000 investment. Based on this one‑year expected‑value calculation alone, I would recommend buying into the game, because on average each $30,000 investment is worth $31,500 after one flip; however, this simple analysis does not yet account for the risk of unfavorable sequences over many years.
 
 ```{python}
 #| label: q1-expected-value-py
@@ -143,19 +143,43 @@ Explain whether the expected value of your account balance after one flip is gre
 
 ### 2) Single Simulation Over Time (Narrative + Plot)
 
-Narrate and visualize what happens to your account balance over the course of one simulation run. Describe the trajectory and state whether you would be satisfied with this particular outcome. Explain your reasoning.
+In one representative simulation path, my account balance starts at $30,000 and initially grows as a few early heads compound the gains: after three flips with a sequence like H–H–T, the balance climbs first to $45,000, then to $67,500, before dropping to about $40,500 after the tail. Over time, the path continues to zig‑zag, but the multiplicative effects of the losses are more punishing than the gains are rewarding; later in the simulation a cluster of tails drives the balance well below the starting point, ending the run with a final balance of only around $12,000. Visually, the trajectory looks volatile—sharp upward jumps followed by steep drawdowns—with long stretches where the balance remains depressed once it has fallen. I would **not** be satisfied with this particular outcome: despite some exciting peaks along the way, the path ultimately leaves me with substantially less than my initial $30,000, underscoring how vulnerable a single realized path can be even when the one‑flip expected value is positive.
 
 ```{python}
 #| label: q2-single-sim-py
 #| fig-cap: "Single simulation path of account balance"
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Simulate one path from $30,000 over N periods.
-# Use matplotlib (Object Oriented style) for the time-series plot.
-# Set a random seed for reproducibility.
-# Round final balance to whole dollars in your narrative.
-# Present your interpretation OUTSIDE this chunk—describe the trajectory
-# and whether you would be satisfied with this outcome.
+np.random.seed(42)
 
+initial_balance = 30_000
+start_age = 30
+end_age = 75
+N_periods = end_age - start_age  # number of annual flips
+
+balances = [initial_balance]
+ages = [start_age]
+
+for t in range(1, N_periods + 1):
+    flip = np.random.choice(["H", "T"])
+    if flip == "H":
+        new_balance = balances[-1] * 1.5
+    else:
+        new_balance = balances[-1] * 0.6
+    balances.append(new_balance)
+    ages.append(start_age + t)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(ages, balances, marker="o")
+ax.axhline(initial_balance, color="red", linestyle="--", linewidth=1, label="Initial $30,000")
+ax.set_xlabel("Age")
+ax.set_ylabel("Account Balance ($)")
+ax.set_title("Single Simulation Path of Account Balance")
+ax.legend()
+ax.grid(True, alpha=0.3)
+
+fig.tight_layout()
 ```
 
 ### 3) 100 Simulations: Distribution of Final Balances
