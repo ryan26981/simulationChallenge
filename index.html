@@ -189,7 +189,7 @@ Figure&nbsp;1: Generative DAG model for the investment game showing how wealth e
 <section id="simulations-distribution-of-final-balances" class="level3">
 <h3 class="anchored" data-anchor-id="simulations-distribution-of-final-balances">3) 100 Simulations: Distribution of Final Balances</h3>
 <p>Across 100 simulated lifetimes, the distribution of final balances is highly skewed. A small number of runs generate extremely large outcomes, while most end well below the $30,000 starting point. In my simulation, the mean final balance is very large—driven by a few extreme winners—but the median is only about $4,400, meaning that more than half of the outcomes result in losing most of the initial investment. The probability of finishing above $30,000 is only about 16%, so the vast majority of paths end in a loss. This highlights the core issue: although the average outcome looks attractive, it is not representative of what typically happens. The upside is real but rare, while the most likely result is a significant loss, making the game unattractive from a practical investment perspective.</p>
-<div id="5a8e9a71" class="cell" data-execution_count="5">
+<div id="72502f41" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -207,15 +207,10 @@ Figure&nbsp;1: Generative DAG model for the investment game showing how wealth e
 <h3 class="anchored" data-anchor-id="modified-strategy-bet-exactly-25-each-round">5) Modified Strategy (Bet Exactly 25% Each Round)</h3>
 <p>Instead of having the full balance at risk with each coin flip, assume only 25% of your balance is gambled each year. Under this modified rule, a head increases the gambled 25% by 50% (so the whole account grows by 12.5%), while a tail cuts that 25% by 40% (so the whole account shrinks by 10%). Across 100 simulated lifetimes, this strategy produces a much <strong>tighter, more stable</strong> distribution of final balances than the original game: huge windfall outcomes are rarer, but catastrophic wipe‑outs are also far less common. The mean final balance is still comfortably above $30,000, and now the median is also closer to or above the starting value, with a noticeably higher probability of finishing ahead than in the original game. Compared to betting the entire balance each year, the 25% strategy is <strong>less risky</strong> and has slightly lower extreme upside, but it delivers a much better balance between growth and capital preservation; I would therefore recommend the <strong>25% bet‑sizing strategy</strong> over the original all‑in game.</p>
 <div id="cell-q5-modified-25pct-py" class="cell" data-execution_count="7">
-<div class="cell-output cell-output-stdout">
-<pre><code>Mean final balance: $49,765.13
-Median final balance: $35,485.79
-Probability of finishing above $30,000: 55.0%</code></pre>
-</div>
 <div class="cell-output cell-output-display">
 <div id="q5-modified-25pct-py" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="index_files/figure-html/q5-modified-25pct-py-output-2.png" width="758" height="449" class="figure-img"></p>
+<p><img src="index_files/figure-html/q5-modified-25pct-py-output-1.png" width="758" height="449" class="figure-img"></p>
 <figcaption>ECDF of final balances for the modified strategy (bet 25% each round)</figcaption>
 </figure>
 </div>
